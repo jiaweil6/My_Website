@@ -5,11 +5,13 @@
  * All selectors, thresholds, and timing values are centralized there.
  *
  * Modules:
- * 1. Back to Top Button - Shows/hides a scroll-to-top button
- * 2. Publication Link Wrapping - Groups icons with their links for better wrapping
- * 3. Publication Description Truncation - Collapses long abstracts with expand/collapse
- * 4. Tag Filtering - Filters publications by category tags
- * 5. News Expand/Collapse - Shows/hides older news items
+ * 1. Theme Toggle - Persists light/dark mode preference
+ * 2. Back to Top Button - Shows/hides a scroll-to-top button
+ * 3. Publication Link Wrapping - Groups icons with their links for better wrapping
+ * 4. Publication Description Truncation - Collapses long abstracts with expand/collapse
+ * 5. Tag Filtering - Filters publications by category tags
+ * 6. Menu Link Scroll - Aligns in-page navigation to section starts
+ * 7. Menu Active State - Highlights the current section in the fixed header
  */
 
 (function() {
@@ -22,6 +24,7 @@
     var CONFIG = {
         // Selectors
         selectors: {
+            themeToggle: '.theme-toggle',
             backToTop: '.back-to-top',
             publicationLinks: '.publication-links',
             publicationDescription: '.publication-description',
@@ -29,19 +32,25 @@
             filterToggle: '.filter-toggle',
             tagFilter: '.tag-filter',
             publicationRow: '#publications-section .publication-row',
-            newsWrapper: '.marginalia-items-wrapper',
-            newsToggle: '.marginalia-toggle'
+            siteMenu: '.site-menu',
+            siteMenuLink: '.site-menu-link[href^="#"]'
         },
+
+        // Theme Toggle
+        themeStorageKey: 'site-theme',
+        prefersDarkQuery: '(prefers-color-scheme: dark)',
 
         // Back to Top
         scrollThreshold: 400,          // pixels scrolled before button appears
 
+        // Menu Scroll
+        menuScrollGapPx: 8,            // space between header and target section
+
         // Description Truncation
-        maxLines: 2,                   // number of lines before truncating
+        maxLines: 3,                   // number of lines before truncating
         lineHeightBuffer: 1.05,        // multiplier for line height tolerance
         fallbackLineHeightRatio: 1.4,  // fallback line-height as ratio of font-size
         descriptionToggleDurationMs: 200, // expand/collapse animation duration
-        newsToggleDurationMs: 200,     // expand/collapse animation duration
 
         // Resize Debouncing
         resizeDebounceMs: 50,          // debounce delay in milliseconds
@@ -49,16 +58,92 @@
 
         // Toggle Labels
         labels: {
+            themeDark: 'Switch to dark mode',
+            themeLight: 'Switch to light mode',
             more: '[more]',
             less: '[less]',
-            showMore: 'Show more',
-            showLess: 'Show less',
             filterAll: '<i class="fas fa-filter"></i> Filter'
         }
     };
 
     // ==========================================================================
-    // 1. Back to Top Button
+    // 1. Theme Toggle
+    // Persists the chosen theme and updates the menu button state
+    // ==========================================================================
+
+    /**
+     * Initializes the light/dark theme toggle in the fixed header.
+     * Theme state is stored in localStorage and mirrored on <html data-theme>.
+     */
+    function initThemeToggle() {
+        var toggle = document.querySelector(CONFIG.selectors.themeToggle);
+
+        if (!toggle) return;
+
+        var icon = toggle.querySelector('i');
+        var mediaQuery = window.matchMedia ? window.matchMedia(CONFIG.prefersDarkQuery) : null;
+
+        function getStoredTheme() {
+            try {
+                return localStorage.getItem(CONFIG.themeStorageKey);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function setStoredTheme(theme) {
+            try {
+                localStorage.setItem(CONFIG.themeStorageKey, theme);
+            } catch (error) {
+                return;
+            }
+        }
+
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        }
+
+        function updateToggle(theme) {
+            var isDark = theme === 'dark';
+            toggle.setAttribute('aria-pressed', String(isDark));
+            toggle.setAttribute('aria-label', isDark ? CONFIG.labels.themeLight : CONFIG.labels.themeDark);
+            toggle.setAttribute('title', isDark ? CONFIG.labels.themeLight : CONFIG.labels.themeDark);
+
+            if (icon) {
+                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+
+        function applyTheme(theme, persist) {
+            document.documentElement.setAttribute('data-theme', theme);
+            updateToggle(theme);
+
+            if (persist) {
+                setStoredTheme(theme);
+            }
+        }
+
+        updateToggle(getCurrentTheme());
+
+        toggle.addEventListener('click', function() {
+            var nextTheme = getCurrentTheme() === 'dark' ? 'light' : 'dark';
+            applyTheme(nextTheme, true);
+        });
+
+        if (mediaQuery && typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', function(event) {
+                var storedTheme = getStoredTheme();
+                if (storedTheme === 'light' || storedTheme === 'dark') {
+                    return;
+                }
+
+                applyTheme(event.matches ? 'dark' : 'light', false);
+            });
+        }
+    }
+
+    // ==========================================================================
+    // 2. Back to Top Button
     // Shows a scroll-to-top button when user scrolls past threshold
     // ==========================================================================
 
@@ -80,7 +165,7 @@
     }
 
     // ==========================================================================
-    // 2. Publication Link Wrapping
+    // 3. Publication Link Wrapping
     // Groups FontAwesome icons with their adjacent links for better line wrapping
     // ==========================================================================
 
@@ -105,7 +190,7 @@
     }
 
     // ==========================================================================
-    // 3. Publication Description Truncation
+    // 4. Publication Description Truncation
     // Collapses long publication abstracts to N lines with expand/collapse toggle
     // ==========================================================================
 
@@ -460,7 +545,7 @@
     }
 
     // ==========================================================================
-    // 4. Tag Filtering
+    // 5. Tag Filtering
     // Filters publications by category using data-tag attributes
     // ==========================================================================
 
@@ -530,62 +615,112 @@
     }
 
     // ==========================================================================
-    // 5. News Expand/Collapse
-    // Shows/hides older news items with a toggle button
+    // 6. Menu Link Scroll
+    // Aligns anchor navigation so the selected section starts cleanly below the header
     // ==========================================================================
 
     /**
-     * Initializes the news section expand/collapse toggle.
-     * CSS handles showing first N items; this toggles the expanded state.
+     * Initializes smooth scrolling for top-menu links with a measured header offset.
+     * Prevents previous-section bleed caused by default anchor alignment.
      */
-    function initNewsToggle() {
-        var wrapper = document.querySelector(CONFIG.selectors.newsWrapper);
-        var toggle = document.querySelector(CONFIG.selectors.newsToggle);
-        var items = wrapper ? wrapper.querySelector('.marginalia-items') : null;
+    function initMenuLinkScroll() {
+        var menu = document.querySelector(CONFIG.selectors.siteMenu);
+        var links = Array.prototype.slice.call(document.querySelectorAll(CONFIG.selectors.siteMenuLink));
 
-        if (!wrapper || !toggle || !items) return;
+        if (!menu || links.length === 0) return;
 
-        function resetItemsAnimation() {
-            items.style.transition = '';
-            items.style.height = '';
-            items.style.overflow = '';
-        }
-
-        toggle.addEventListener('click', function() {
-            resetItemsAnimation();
-
-            var startHeight = items.getBoundingClientRect().height;
-            var isExpanded = wrapper.classList.toggle('expanded');
-            var endHeight = items.getBoundingClientRect().height;
-            toggle.setAttribute('aria-expanded', isExpanded);
-            toggle.textContent = isExpanded ? CONFIG.labels.showLess : CONFIG.labels.showMore;
-
-            if (startHeight === endHeight) {
-                return;
+        function getTargetTop(section) {
+            if (section.id === 'about-section') {
+                return 0;
             }
 
-            items.style.height = startHeight + 'px';
-            items.style.overflow = 'hidden';
-            items.offsetHeight;
-            items.style.transition = 'height ' + CONFIG.newsToggleDurationMs + 'ms ease';
-            items.style.height = endHeight + 'px';
+            var menuHeight = menu.getBoundingClientRect().height;
+            var sectionTop = section.getBoundingClientRect().top + window.scrollY;
+            return Math.max(0, Math.round(sectionTop - menuHeight - CONFIG.menuScrollGapPx));
+        }
 
-            items.addEventListener('transitionend', function(event) {
-                if (event.propertyName === 'height') {
-                    resetItemsAnimation();
+        function scrollToSection(section) {
+            var prefersReducedMotion = window.matchMedia
+                && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            window.scrollTo({
+                top: getTargetTop(section),
+                behavior: prefersReducedMotion ? 'auto' : 'smooth'
+            });
+        }
+
+        links.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                var href = link.getAttribute('href');
+                var section = href ? document.querySelector(href) : null;
+
+                if (!section) return;
+
+                event.preventDefault();
+                scrollToSection(section);
+
+                if (window.history && typeof window.history.pushState === 'function') {
+                    window.history.pushState(null, '', href);
+                } else {
+                    window.location.hash = href;
                 }
-            }, { once: true });
+            });
         });
+    }
+
+    // ==========================================================================
+    // 7. Menu Active State
+    // Highlights the active section link in the fixed header
+    // ==========================================================================
+
+    /**
+     * Initializes active-state tracking for in-page menu links.
+     * Uses section offsets so the current link remains active between sections.
+     */
+    function initMenuActiveState() {
+        var menu = document.querySelector(CONFIG.selectors.siteMenu);
+        var links = Array.prototype.slice.call(document.querySelectorAll(CONFIG.selectors.siteMenuLink));
+
+        if (!menu || links.length === 0) return;
+
+        var linkMap = links.map(function(link) {
+            var href = link.getAttribute('href');
+            var section = href ? document.querySelector(href) : null;
+            return section ? { link: link, section: section } : null;
+        }).filter(Boolean);
+
+        if (linkMap.length === 0) return;
+
+        function updateActiveLink() {
+            var currentId = linkMap[0].section.id;
+            var threshold = window.scrollY + menu.offsetHeight + 24;
+
+            linkMap.forEach(function(item) {
+                if (item.section.offsetTop <= threshold) {
+                    currentId = item.section.id;
+                }
+            });
+
+            linkMap.forEach(function(item) {
+                item.link.classList.toggle('is-active', item.section.id === currentId);
+            });
+        }
+
+        updateActiveLink();
+        window.addEventListener('scroll', updateActiveLink, { passive: true });
+        window.addEventListener('resize', updateActiveLink);
     }
 
     // ==========================================================================
     // Initialize all modules
     // ==========================================================================
 
+    initThemeToggle();
     initBackToTop();
     initLinkWrapping();
     initDescriptionTruncation();
     initTagFiltering();
-    initNewsToggle();
+    initMenuLinkScroll();
+    initMenuActiveState();
 
 })();

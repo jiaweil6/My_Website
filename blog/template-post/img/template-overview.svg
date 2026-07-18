@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Template overview figure</title>
+  <desc id="desc">A placeholder overview diagram with a waveform, arrows, and labeled panels.</desc>
+  <rect width="1200" height="700" fill="#f7f3ee"/>
+  <rect x="70" y="80" width="1060" height="540" rx="28" fill="#ffffff" stroke="#ece4dc" stroke-width="4"/>
+  <text x="120" y="160" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="3">OVERVIEW FIGURE</text>
+  <text x="120" y="208" fill="#5f5a56" font-family="Arial, Helvetica, sans-serif" font-size="26">Swap this graphic for a system diagram, signal flow, or annotated screenshot.</text>
+  <rect x="120" y="270" width="240" height="180" rx="20" fill="#faf7f3" stroke="#ddd0c5" stroke-width="3"/>
+  <rect x="480" y="270" width="240" height="180" rx="20" fill="#faf7f3" stroke="#ddd0c5" stroke-width="3"/>
+  <rect x="840" y="270" width="240" height="180" rx="20" fill="#faf7f3" stroke="#ddd0c5" stroke-width="3"/>
+  <text x="168" y="364" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">INPUT</text>
+  <text x="525" y="364" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">PROCESS</text>
+  <text x="890" y="364" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700">OUTPUT</text>
+  <path d="M370 360 H455" fill="none" stroke="#8e2d1e" stroke-width="8" stroke-linecap="round"/>
+  <path d="M438 345 L465 360 L438 375" fill="none" stroke="#8e2d1e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M730 360 H815" fill="none" stroke="#8e2d1e" stroke-width="8" stroke-linecap="round"/>
+  <path d="M798 345 L825 360 L798 375" fill="none" stroke="#8e2d1e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M146 525 C195 480 244 570 292 525 C341 480 390 570 438 525" fill="none" stroke="#8e2d1e" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="600" cy="525" r="52" fill="#8e2d1e" opacity="0.08"/>
+  <path d="M578 525 H622 M600 503 V547" fill="none" stroke="#8e2d1e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M896 500 L1016 500" fill="none" stroke="#8e2d1e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M896 525 L1046 525" fill="none" stroke="#8e2d1e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M896 550 L984 550" fill="none" stroke="#8e2d1e" stroke-width="6" stroke-linecap="round"/>
+</svg>

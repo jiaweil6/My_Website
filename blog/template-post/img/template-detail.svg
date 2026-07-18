@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Template detail figure</title>
+  <desc id="desc">A placeholder detail chart with guide lines and annotations.</desc>
+  <rect width="1200" height="720" fill="#f7f3ee"/>
+  <rect x="70" y="70" width="1060" height="580" rx="28" fill="#ffffff" stroke="#ece4dc" stroke-width="4"/>
+  <text x="120" y="150" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="3">DETAIL FIGURE</text>
+  <text x="120" y="198" fill="#5f5a56" font-family="Arial, Helvetica, sans-serif" font-size="26">Use this slot for a plot, spectrum, timeline, or annotated breakdown.</text>
+  <line x1="150" y1="560" x2="1040" y2="560" stroke="#ddd0c5" stroke-width="4"/>
+  <line x1="150" y1="260" x2="150" y2="560" stroke="#ddd0c5" stroke-width="4"/>
+  <path d="M180 500 C270 420 330 440 420 340 C500 250 580 240 650 320 C720 400 790 430 890 360 C945 322 985 300 1010 280" fill="none" stroke="#8e2d1e" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="420" cy="340" r="10" fill="#8e2d1e"/>
+  <circle cx="650" cy="320" r="10" fill="#8e2d1e"/>
+  <circle cx="890" cy="360" r="10" fill="#8e2d1e"/>
+  <rect x="765" y="160" width="235" height="105" rx="18" fill="#faf7f3" stroke="#ddd0c5" stroke-width="3"/>
+  <text x="795" y="205" fill="#8e2d1e" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Annotation</text>
+  <text x="795" y="240" fill="#5f5a56" font-family="Arial, Helvetica, sans-serif" font-size="22">Point out the part of</text>
+  <text x="795" y="270" fill="#5f5a56" font-family="Arial, Helvetica, sans-serif" font-size="22">the figure that matters.</text>
+  <path d="M765 245 L670 320" fill="none" stroke="#8e2d1e" stroke-width="4" stroke-linecap="round"/>
+</svg>

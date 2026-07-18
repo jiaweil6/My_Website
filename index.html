@@ -27,9 +27,9 @@ Daniel R. Jiang Webpage Design/Template
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=Ma+Shan+Zheng&display=swap">
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=Ma+Shan+Zheng&display=swap"
         rel="stylesheet">
 
     <!-- Font Awesome (replace with your preferred icon set if desired) -->
@@ -37,6 +37,26 @@ Daniel R. Jiang Webpage Design/Template
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer">
 
+    <script>
+        (function () {
+            var storageKey = 'site-theme';
+            var theme = null;
+
+            try {
+                theme = localStorage.getItem(storageKey);
+            } catch (error) {
+                theme = null;
+            }
+
+            if (theme !== 'light' && theme !== 'dark') {
+                theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                    ? 'dark'
+                    : 'light';
+            }
+
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
     <link href="css/style.css" rel="stylesheet">
     <script>
         // Detect when fonts are loaded to prevent FOUT
@@ -53,85 +73,138 @@ Daniel R. Jiang Webpage Design/Template
 </head>
 
 <body>
+    <nav class="site-menu" aria-label="Primary">
+        <div class="site-menu-shell">
+            <a class="site-menu-brand" href="#about-section">Jiawei Liu</a>
+            <div class="site-menu-inner">
+                <a class="site-menu-link" href="#about-section">About</a>
+                <a class="site-menu-link" href="#education-section">Education</a>
+                <a class="site-menu-link" href="#publications-section">Research</a>
+                <a class="site-menu-link" href="#projects-section">Projects</a>
+                <a class="site-menu-link" href="#music-section">Music</a>
+                <a class="site-menu-link" href="#blog-section">Blog</a>
+            </div>
+        </div>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+        <i class="fas fa-moon" aria-hidden="true"></i>
+    </button>
     <main>
         <!-- Biography Card -->
-        <div class="bio-card">
+        <div class="bio-card" id="about-section">
             <div class="container-fluid">
-                <h1 class="bio-name">Your Name</h1>
+                <div class="bio-layout">
+                    <aside class="bio-sidebar">
+                        <div class="bio-portrait" role="img" aria-label="Portrait of Jiawei Liu">
+                            <img class="bio-portrait-image bio-portrait-image-light" src="img/profile-photo-light.jpg" alt="" aria-hidden="true" />
+                            <img class="bio-portrait-image bio-portrait-image-dark" src="img/profile-photo.jpg" alt="" aria-hidden="true" />
+                        </div>
 
-                <div class="bio-grid">
-                    <!-- Photo & Social Links -->
-                    <div class="bio-social">
-                        <img src="img/profile.svg" alt="Your Name" />
-                        <nav class="social-links" aria-label="Social media profiles">
+                        <div class="bio-sidebar-stack">
+                            <div class="bio-sidebar-block">
+                                <span class="bio-sidebar-label">Email</span>
+                                <a class="bio-sidebar-emphasis" href="mailto:jiaweil6@andrew.cmu.edu">jiaweil6@andrew.cmu.edu</a>
+                            </div>
+                        </div>
+
+                        <nav class="bio-social-links" aria-label="Social media profiles">
                             <a target="_blank" rel="noopener noreferrer" href="https://scholar.google.com/" aria-label="Google Scholar"><i class="fab fa-google"></i></a>
                             <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                            <a target="_blank" rel="noopener noreferrer" href="https://github.com/" aria-label="GitHub"><i class="fab fa-github"></i></a>
                         </nav>
-                    </div>
+                    </aside>
 
-                    <!-- Bio Text -->
-                    <div class="bio-right">
-                        <p>
-                            Lorem ipsum dolor sit amet, <span class="highlight-organic">consectetur adipiscing elit</span>.
-                            Sed do eiusmod tempor incididunt ut <span class="highlight-organic">labore et dolore</span>
-                            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea <span class="highlight-organic">commodo consequat</span>. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est laborum.
-                        </p>
-                        <p class="contact-info">
-                            <i class="far fa-envelope"></i> <a href="mailto:your.email@example.com">your.email@example.com</a>
-                            <i class="far fa-copy"></i> <a target="_blank" rel="noopener noreferrer" href="files/cv.pdf">CV</a>
-                        </p>
+                    <div class="bio-main">
+                        <header class="bio-header">
+                            <h1 class="bio-name">Jiawei Liu <span class="bio-name-native-wrap"><span class="bio-name-native-mark">(</span><span class="bio-name-native">刘嘉唯</span><span class="bio-name-native-mark">)</span></span></h1>
+                        </header>
+
+                        <div class="bio-summary">
+                            <p>
+                                I work across research, writing, and projects at the intersection of technology and
+                                human experience. Use this introduction to explain what you study or build, the methods
+                                you rely on, and the questions that keep returning in your work.
+                            </p>
+                        </div>
+
+                        <div class="bio-detail-grid">
+                            <section class="bio-detail-section" aria-labelledby="bio-interests-heading">
+                                <h2 class="bio-detail-heading" id="bio-interests-heading">Interests</h2>
+                                <ul class="bio-detail-list">
+                                    <li>Audio Signal Processing</li>
+                                    <li>Generative Music</li>
+                                    <li>Electroacoustics</li>
+                                </ul>
+                            </section>
+
+                            <section class="bio-detail-section" aria-labelledby="bio-skills-heading">
+                                <h2 class="bio-detail-heading" id="bio-skills-heading">Skills</h2>
+                                <div class="bio-detail-stack">
+                                    <div class="bio-detail-item">
+                                        <p class="bio-detail-title">Digital Signal Processing</p>
+                                        <p class="bio-detail-subtitle">Python · MATLAB · C · Max/MSP</p>
+                                    </div>
+                                    <div class="bio-detail-item">
+                                        <p class="bio-detail-title">Music Production</p>
+                                        <p class="bio-detail-subtitle">Logic · Ableton · Pro Tools</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="bio-detail-section" aria-labelledby="bio-languages-heading">
+                                <h2 class="bio-detail-heading" id="bio-languages-heading">Languages</h2>
+                                <div class="bio-detail-stack">
+                                    <div class="bio-detail-item">
+                                        <p class="bio-detail-title"><span aria-hidden="true">🇺🇸</span> English</p>
+                                        <p class="bio-detail-subtitle">Native or bilingual proficiency</p>
+                                    </div>
+                                    <div class="bio-detail-item">
+                                        <p class="bio-detail-title"><span aria-hidden="true">🇨🇳</span> Chinese</p>
+                                        <p class="bio-detail-subtitle">Native or bilingual proficiency</p>
+                                    </div>
+                                    <div class="bio-detail-item">
+                                        <p class="bio-detail-title"><span aria-hidden="true">🇰🇷</span> Korean</p>
+                                        <p class="bio-detail-subtitle">Daily conversational proficiency</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End Biography Card -->
 
-        <!-- Recent News (Marginalia Style) -->
-        <div class="marginalia-section">
-            <div class="marginalia-container">
-                <span class="marginalia-label">News</span>
-                <div class="marginalia-items-wrapper">
-                    <div class="marginalia-items">
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Jan '26</span>
-                            <span class="marginalia-text">Example news item. Replace with your latest update.</span>
+        <!-- Education -->
+        <div class="content-section" id="education-section">
+            <div class="container-fluid">
+                <div class="section-header-row">
+                    <h3 class="section-header">Education</h3>
+                </div>
+
+                <div class="education-list">
+                    <article class="education-item">
+                        <img class="education-logo" src="img/trajectory/carnegie-mellon-seal.svg" alt="Carnegie Mellon University seal" />
+                        <div class="education-copy">
+                            <p class="education-school">Carnegie Mellon University</p>
+                            <p class="education-degree">BESA in ECE and Music Technology</p>
+                            <p class="education-meta">Pittsburgh, PA · Class of 2027 · President, CMU Badminton.</p>
                         </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Nov '25</span>
-                            <span class="marginalia-text">Example talk or award entry. Keep it short.</span>
+                    </article>
+
+                    <article class="education-item">
+                        <img class="education-logo" src="img/trajectory/dwight-school-shield.png" alt="Dwight School shield" />
+                        <div class="education-copy">
+                            <p class="education-school">Dwight School Seoul</p>
+                            <p class="education-degree">International Baccalaureate Diploma Programme</p>
+                            <p class="education-meta">Seoul, South Korea · Class of 2023 · Varsity Badminton, Varsity Basketball, Varsity Volleyball, Orchestra.</p>
                         </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Oct '25</span>
-                            <span class="marginalia-text">Example paper acceptance or preprint announcement.</span>
-                        </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Sep '25</span>
-                            <span class="marginalia-text">Example award, grant, or fellowship announcement.</span>
-                        </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Aug '25</span>
-                            <span class="marginalia-text">Example dataset or software release.</span>
-                        </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Jun '25</span>
-                            <span class="marginalia-text">Example workshop or invited panel appearance.</span>
-                        </div>
-                        <div class="marginalia-item">
-                            <span class="marginalia-date">Apr '25</span>
-                            <span class="marginalia-text">Example press or newsletter mention.</span>
-                        </div>
-                    </div>
-                    <div class="marginalia-fade"></div>
-                    <button class="marginalia-toggle" aria-expanded="false">Show more</button>
+                    </article>
                 </div>
             </div>
         </div>
-        <!-- End Recent News -->
+        <!-- End Education -->
 
         <!-- Research -->
         <div class="content-section" id="publications-section">
@@ -232,33 +305,19 @@ Daniel R. Jiang Webpage Design/Template
         <div class="content-section" id="teaching-section">
             <div class="container-fluid">
                 <div class="section-header-row">
-                    <h3 class="section-header">Teaching and Lecture Notes</h3>
+                    <h3 class="section-header">Teaching Experience</h3>
                 </div>
 
                 <div class="course-row">
                     <div class="row-icon">
-                        <h5><a target="_blank" rel="noopener noreferrer" href="https://example.com">CS 101</a></h5>
+                        <h5><a target="_blank" rel="noopener noreferrer" href="https://www.cs.cmu.edu/~15322/">15-322/622</a></h5>
                     </div>
                     <div class="row-content">
-                        <p class="publication-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">An Example Course Title Goes Here</a>, <span class="journal-submitted">Undergraduate</span></p>
-                        <p class="teaching-position">Instructor, Fall 2025</p>
-                        <p class="publication-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum vero.</p>
+                        <p class="publication-title"><a target="_blank" rel="noopener noreferrer" href="https://www.cs.cmu.edu/~15322/about/">Intro to Computer Music</a>, <span class="journal-submitted">Undergraduate / Graduate</span></p>
+                        <p class="teaching-position">Teaching Assistant, Spring 2026</p>
+                        <p class="publication-description">Worked with Professor Chris Donahue to support a programming- and project-based course covering digital audio fundamentals, sound synthesis, and audio signal processing. Hosted office hours, answered student questions on Piazza, led review sessions, and graded assignments and final projects, with a focus on helping students apply computational tools to sound synthesis, audio effects, and music composition. Also helped shape the next iteration of ICM by incorporating more contemporary computer music approaches and developing new homework assignments and projects.</p>
                         <p class="publication-links">
-                            <i class="far fa-copy"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Lecture Notes</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="course-row">
-                    <div class="row-icon">
-                        <h5><a target="_blank" rel="noopener noreferrer" href="https://example.com">CS 202</a></h5>
-                    </div>
-                    <div class="row-content">
-                        <p class="publication-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">Another Sample Course Title Here</a>, <span class="journal-submitted">Graduate</span></p>
-                        <p class="teaching-position">Co-Instructor, Spring 2024</p>
-                        <p class="publication-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc et quam erat.</p>
-                        <p class="publication-links">
-                            <i class="far fa-copy"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Lecture Notes</a>
+                            <i class="far fa-copy"></i> <a target="_blank" rel="noopener noreferrer" href="https://www.cs.cmu.edu/~15322/">Course site</a>
                         </p>
                     </div>
                 </div>
@@ -266,11 +325,11 @@ Daniel R. Jiang Webpage Design/Template
         </div>
         <!-- End Teaching -->
 
-        <!-- Personal Projects -->
+        <!-- Projects -->
         <div class="content-section" id="projects-section">
             <div class="container-fluid">
                 <div class="section-header-row">
-                    <h3 class="section-header">Personal Projects</h3>
+                    <h3 class="section-header">Projects</h3>
                 </div>
 
                 <div class="publication-row">
@@ -308,6 +367,94 @@ Daniel R. Jiang Webpage Design/Template
             </div>
         </div>
         <!-- End Projects -->
+
+        <!-- Music -->
+        <div class="content-section" id="music-section">
+            <div class="container-fluid">
+                <div class="section-header-row">
+                    <h3 class="section-header">Music</h3>
+                </div>
+
+                <div class="music-row">
+                    <div class="row-content">
+                        <p class="publication-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">An Original Track Title Goes Here</a></p>
+                        <p class="teaching-position">Composition, production, or release details</p>
+                        <p class="publication-description">Use this entry for an original song, instrumental, remix, or collaborative release. You can describe the sound, the tools you used, the context behind the piece, or where it was performed or published.</p>
+                        <p class="publication-links">
+                            <i class="far fa-arrow-alt-circle-right"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Listen</a>
+                            <i class="far fa-arrow-alt-circle-right"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Credits</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="music-row">
+                    <div class="row-content">
+                        <p class="publication-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">A Release, Score, or Music Project</a></p>
+                        <p class="teaching-position">Project notes, collaborators, or live context</p>
+                        <p class="publication-description">This can be a larger body of music work, such as an EP, soundtrack, live set, or experimental audio piece. Use the description to explain the concept, process, or the role music plays in your broader creative practice.</p>
+                        <p class="publication-links">
+                            <i class="far fa-arrow-alt-circle-right"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Listen</a>
+                            <i class="far fa-arrow-alt-circle-right"></i> <a target="_blank" rel="noopener noreferrer" href="https://example.com">Project note</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Music -->
+
+        <!-- Blog -->
+        <div class="content-section" id="blog-section">
+            <div class="container-fluid">
+                <div class="section-header-row">
+                    <h3 class="section-header">Blog</h3>
+                </div>
+
+                <div class="blog-list">
+                    <article class="blog-row">
+                        <p class="blog-date">Mar 2025</p>
+                        <div class="blog-content">
+                            <div class="blog-title-row">
+                                <p class="blog-title"><a target="_blank" rel="noopener noreferrer" href="blog/convolution/index.html">Algorithm Behind Realistic Reverb? What is Convolution?</a></p>
+                                <span class="blog-tag">Audio DSP</span>
+                            </div>
+                            <p class="blog-excerpt">A translated version of the original Streamlit post, rebuilt as a template-blog page with the main intuition, equations, and figures behind convolution reverb.</p>
+                            <p class="blog-links">
+                                <a target="_blank" rel="noopener noreferrer" href="blog/convolution/index.html">Read post</a>
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="blog-row">
+                        <p class="blog-date">Feb 2026</p>
+                        <div class="blog-content">
+                            <div class="blog-title-row">
+                                <p class="blog-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">Notes From a Project in Progress</a></p>
+                                <span class="blog-tag">Audio DSP</span>
+                            </div>
+                            <p class="blog-excerpt">This can be a lighter update format for sharing ongoing experiments, a behind-the-scenes build log, or a few lessons from something you are currently exploring.</p>
+                            <p class="blog-links">
+                                <a target="_blank" rel="noopener noreferrer" href="https://example.com">Read notes</a>
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="blog-row">
+                        <p class="blog-date">Nov 2025</p>
+                        <div class="blog-content">
+                            <div class="blog-title-row">
+                                <p class="blog-title"><a target="_blank" rel="noopener noreferrer" href="https://example.com">What I’m Reading and Thinking About</a></p>
+                                <span class="blog-tag">Audio DSP</span>
+                            </div>
+                            <p class="blog-excerpt">A useful template for a reading roundup, course reflection, conference recap, or a post that gathers references and ideas you want to return to later.</p>
+                            <p class="blog-links">
+                                <a target="_blank" rel="noopener noreferrer" href="https://example.com">Open entry</a>
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <!-- End Blog -->
     </main>
 
     <p class="template-credit">
